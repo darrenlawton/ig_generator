@@ -25,7 +25,7 @@ setup(
     python_requires='>=3.5, <4',
 
     install_requires=required,
-
+    tests_require=['unittest'],
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
     # `pip` to create the appropriate form of executable for the target
