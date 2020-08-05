@@ -9,8 +9,8 @@ from IGPrices.config import IG_BASE_URL
 
 
 def get_session():
-    login_details = {'username': secrets.username, 'password': secrets.password}
-    return IGSession(IG_BASE_URL, secrets.API_key, login_details)
+    login_details = {'username': secrets.login_details['username'], 'password': secrets.login_details['password']}
+    return IGSession(secrets.API_key, login_details)
 
 
 class MyTestCase(unittest.TestCase):

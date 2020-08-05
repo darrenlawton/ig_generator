@@ -1,5 +1,5 @@
-import os
-import sys
+from .rest_client import IGSession
 
-cwd = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(str(cwd))
+__all__ = [
+    "IGSession"
+]

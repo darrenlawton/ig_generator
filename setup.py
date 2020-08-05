@@ -18,7 +18,7 @@ setup(
 
     keywords='trading, investment, finance',
 
-    packages=find_packages(),
+    packages=['IGPrices'],
 
     python_requires='>=3.5, <4',
 

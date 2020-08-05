@@ -8,8 +8,8 @@ import pandas as pd
 import datetime
 from pandas.tseries.offsets import BDay
 
-import config
-from utilities import update_headers, encrypt_password, conv_datetime
+import IGPrices.config as config
+from IGPrices.utilities import update_headers, encrypt_password, conv_datetime
 
 logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=config.LOGGING_LEVEL)
 
@@ -33,8 +33,8 @@ class BaseClient(ABC):
 
 
 class IGSession(BaseClient):
-    def __init__(self, base_url: str, api_key: str, ulogin_details: dict):
-        self.base_url = base_url
+    def __init__(self, api_key: str, ulogin_details: dict):
+        self.base_url = 'https://api.ig.com/gateway/deal/'
         self.api_key = api_key
         self.login_details = ulogin_details
 
