@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
     required = f.read().splitlines()
 
 setup(
-    name='ig_prices',  # Required
+    name='IGPrices',  # Required
 
     version='1.0',  # Required
 
@@ -18,26 +18,12 @@ setup(
 
     keywords='trading, investment, finance',
 
-    package_dir={'': 'src'},
-
-    packages=find_packages(where='src'),
+    packages=find_packages(),
 
     python_requires='>=3.5, <4',
 
     install_requires=required,
     tests_require=['unittest'],
-    # To provide executable scripts, use entry points in preference to the
-    # "scripts" keyword. Entry points provide cross-platform support and allow
-    # `pip` to create the appropriate form of executable for the target
-    # platform.
-    #
-    # For example, the following would provide a command called `sample` which
-    # executes the function `main` from this package when invoked:
-    entry_points={  # Optional
-        'console_scripts': [
-            'sample=sample:main',
-        ],
-    },
 
     project_urls={
         'Bug Reports': 'https://github.com/darrenlawton/ig_generator/issues',
