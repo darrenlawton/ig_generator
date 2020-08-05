@@ -2,10 +2,10 @@ import unittest
 import datetime
 from pandas.tseries.offsets import BDay
 
-from src.rest_client import IGSession
-from src.utilities import conv_datetime
+from IGPrices.rest_client import IGSession
+from IGPrices.utilities import conv_datetime
 import secrets
-from src.config import IG_BASE_URL
+from IGPrices.config import IG_BASE_URL
 
 
 def get_session():
