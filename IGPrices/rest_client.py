@@ -119,8 +119,8 @@ class IGSession(BaseClient):
         endpoint = urljoin("prices/", epic_id)
         params = {'version': "3"}
         if resolution: params['resolution'] = resolution
-        if start_date: params['from'] = conv_datetime(start_date, 1)
-        if end_date: params['to'] = conv_datetime(end_date, 1)
+        if start_date: params['from'] = conv_datetime(start_date, 3)
+        if end_date: params['to'] = conv_datetime(end_date, 3)
         if numpoints: params['max'] = numpoints
         if pagesize: params["pageSize"] = pagesize
         if pagenumber: params["pageNumber"] = pagenumber

@@ -5,7 +5,6 @@ from pandas.tseries.offsets import BDay
 from IGPrices.rest_client import IGSession
 from IGPrices.utilities import conv_datetime
 import secrets
-from IGPrices.config import IG_BASE_URL
 
 
 def get_session():
@@ -27,7 +26,7 @@ class MyTestCase(unittest.TestCase):
     def test_epic_price(self):
         numpoints = 5
         session = get_session()
-        data = session.get_historical_prices(epic_id="CS.D.AUDUSD.CFD.IP", numpoints=numpoints)
+        data = session.get_historical_prices(epic_id="CS.D.AUDUSD.CFD.IP", end_date = datetime.datetime.today(), numpoints=numpoints)
         self.assertEqual(data.shape[0], numpoints)
 
     def test_fixed_price(self):

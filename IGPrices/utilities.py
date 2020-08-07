@@ -4,7 +4,7 @@ from Crypto.PublicKey import RSA
 import pandas as pd
 import six
 
-DATE_FORMATS = {1: "%Y:%m:%d-%H:%M:%S", 2: "%Y/%m/%d %H:%M:%S", 3: "%Y/%m/%d %H:%M:%S"}
+DATE_FORMATS = {1: "%Y:%m:%d-%H:%M:%S", 2: "%Y/%m/%d %H:%M:%S", 3: "%Y-%m-%dT%H:%M:%S"}
 
 
 def update_headers(existing_headers: dict, new_headers: dict) -> dict:
