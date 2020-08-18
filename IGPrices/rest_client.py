@@ -44,7 +44,7 @@ class IGSession(BaseClient):
         self.authorization_headers = {'CST': None,
                                       'X-SECURITY-TOKEN': None}
 
-    def login(self) -> None:
+    def login(self) -> bool:
         key, timestamp = self.get_encryption_key(self.login_details['username'])
         epassword, encryption = encrypt_password(self.login_details['password'], key, timestamp)
 
@@ -56,10 +56,12 @@ class IGSession(BaseClient):
                                headers={**self.headers, 'Version': '2'}, timeout=config.API_TIMEOUT)
             if response.status_code == 200:
                 self.authorization_headers = update_headers(self.authorization_headers, response.headers)
+                return True
             else: logging.error("Login Error: {0} {1}".format(response.status_code, response.text))
         except Exception as e:
             logging.error(traceback.format_exc())
             raise e
+        return False
 
     def logout(self) -> None:
         self.delete('session', headers={})
