@@ -1,7 +1,7 @@
 # IG Markets Client
-A very simple IG Markets API Client to retrieve price data only. 
+IG Markets API REST and Streaming Clients. The rest client only implements methods to retrieve price data only. 
 
-Retrieves historical price data for any EPIC identifier. LIVE account only.
+LIVE account only.
 
  
  
