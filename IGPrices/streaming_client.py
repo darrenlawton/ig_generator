@@ -3,12 +3,12 @@ import traceback
 import sys
 
 from IGPrices.lighstreamer import LSClient
-from IGPrices.rest_client import IGSession
+from IGPrices.rest_client import IG_session
 
 logger = logging.getLogger(__name__)
 
 
-class IG_streaming_session(IGSession, LSClient):
+class IG_streaming_session(IG_session, LSClient):
     def __init__(self, api_key: str, ulogin_details: dict):
         IGSession.__init__(self, api_key, ulogin_details)
         if self.login():

@@ -32,7 +32,7 @@ class BaseClient(ABC):
                    headers: dict = None) -> dict: pass
 
 
-class IGSession(BaseClient):
+class IG_session(BaseClient):
     def __init__(self, api_key: str, ulogin_details: dict):
         self.base_url = 'https://api.ig.com/gateway/deal/'
         self.api_key = api_key

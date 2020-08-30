@@ -2,14 +2,14 @@ import unittest
 import datetime
 from pandas.tseries.offsets import BDay
 
-from IGPrices.rest_client import IGSession
+from IGPrices.rest_client import IG_session
 from IGPrices.utilities import conv_datetime
 import secrets
 
 
 def get_session():
     login_details = {'username': secrets.login_details['username'], 'password': secrets.login_details['password']}
-    return IGSession(secrets.API_key, login_details)
+    return IG_session(secrets.API_key, login_details)
 
 
 class MyTestCase(unittest.TestCase):
