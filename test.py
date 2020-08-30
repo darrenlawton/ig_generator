@@ -16,7 +16,7 @@ class MyTestCase(unittest.TestCase):
     def test_login(self):
         session = get_session()
         session.login()
-        self.assertIsNotNone(session.authorization_headers)
+        self.assertIsNotNone(session.authorisation_headers)
 
     def test_search_markets(self):
         session = get_session()
@@ -35,19 +35,19 @@ class MyTestCase(unittest.TestCase):
         data = session.get_historical_prices(method="FIXED", epic_id="CS.D.AUDUSD.CFD.IP", numpoints=numpoints)
         self.assertEqual(data.shape[0], numpoints)
 
-    def test_date_price(self):
-        start_date = datetime.datetime.today()-BDay(1)
-        start_date_rounded = start_date - datetime.timedelta(minutes=start_date.minute % 1,
-                                     seconds=start_date.second,
-                                     microseconds=start_date.microsecond)
-        end_date = datetime.datetime.today()
-        end_date_rounded = end_date - datetime.timedelta(minutes=end_date.minute % 1,
-                                     seconds=end_date.second,
-                                     microseconds=end_date.microsecond)
-        session = get_session()
-        data = session.get_historical_prices(method="DATE", epic_id="CS.D.AUDUSD.CFD.IP", start_date=start_date_rounded, end_date=end_date_rounded)
-        self.assertEqual(conv_datetime(data['snapshotTime'].iloc[0], 1), conv_datetime(start_date_rounded, 1))
-        self.assertEqual(conv_datetime(data['snapshotTime'].iloc[-1], 1), conv_datetime(end_date_rounded, 1))
+    # def test_date_price(self):
+    #     start_date = datetime.datetime.today()-BDay(1)
+    #     start_date_rounded = start_date - datetime.timedelta(minutes=start_date.minute % 1,
+    #                                  seconds=start_date.second,
+    #                                  microseconds=start_date.microsecond)
+    #     end_date = datetime.datetime.today()
+    #     end_date_rounded = end_date - datetime.timedelta(minutes=end_date.minute % 1,
+    #                                  seconds=end_date.second,
+    #                                  microseconds=end_date.microsecond)
+    #     session = get_session()
+    #     data = session.get_historical_prices(method="DATE", epic_id="CS.D.AUDUSD.CFD.IP", start_date=start_date_rounded, end_date=end_date_rounded)
+    #     self.assertEqual(conv_datetime(data['snapshotTime'].iloc[0], 1), conv_datetime(start_date_rounded, 1))
+    #     self.assertEqual(conv_datetime(data['snapshotTime'].iloc[-1], 1), conv_datetime(end_date_rounded, 1))
 
 
 if __name__ == '__main__':

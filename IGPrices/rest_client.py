@@ -41,8 +41,9 @@ class IGSession(BaseClient):
         self.headers = {'Content-Type': 'application/json',
                         'Accept': 'application/json; charset=UTF-8',
                         'X-IG-API-KEY': self.api_key}
-        self.authorization_headers = {'CST': None,
+        self.authorisation_headers = {'CST': None,
                                       'X-SECURITY-TOKEN': None}
+        self.lightstreamerEndpoint = None
 
     def login(self) -> bool:
         key, timestamp = self.get_encryption_key(self.login_details['username'])
@@ -55,9 +56,11 @@ class IGSession(BaseClient):
                                     'password': epassword}),
                                headers={**self.headers, 'Version': '2'}, timeout=config.API_TIMEOUT)
             if response.status_code == 200:
-                self.authorization_headers = update_headers(self.authorization_headers, response.headers)
+                self.authorisation_headers = update_headers(self.authorisation_headers, response.headers)
+                self.lightstreamerEndpoint = response['lightstreamerEndpoint']
                 return True
-            else: logging.error("Login Error: {0} {1}".format(response.status_code, response.text))
+            else:
+                logging.error("Login Error: {0} {1}".format(response.status_code, response.text))
         except Exception as e:
             logging.error(traceback.format_exc())
             raise e
@@ -73,7 +76,8 @@ class IGSession(BaseClient):
             if response.status_code == 200:
                 data = response.json()
                 return data["encryptionKey"], data["timeStamp"]
-            else: logging.error("Encryption key error: {0} {1}".format(response.status_code, response.text))
+            else:
+                logging.error("Encryption key error: {0} {1}".format(response.status_code, response.text))
         except Exception as e:
             logging.error(traceback.format_exc())
             raise e
@@ -82,10 +86,10 @@ class IGSession(BaseClient):
 
     def ig_request(self, method: str, endpoint: str, params: dict = None, data: dict = None,
                    headers: dict = None) -> dict:
-        if None in list(self.authorization_headers.values()):
+        if None in list(self.authorisation_headers.values()):
             self.login()
 
-        ig_headers = {**self.headers, **self.authorization_headers}
+        ig_headers = {**self.headers, **self.authorisation_headers}
         if headers is not None:
             ig_headers.update(headers)
 
@@ -96,12 +100,13 @@ class IGSession(BaseClient):
             response = request(method, urljoin(self.base_url, endpoint), params=params,
                                data=data, headers=ig_headers, timeout=config.API_TIMEOUT)
             if response.status_code == 200:
-                self.authorization_headers = update_headers(self.authorization_headers, response.headers)
+                self.authorisation_headers = update_headers(self.authorisation_headers, response.headers)
                 if response.content:
                     return response.json()
                 else:
                     return {}
-            else: logging.error("IG request error: {0} {1}".format(response.status_code, response.text))
+            else:
+                logging.error("IG request error: {0} {1}".format(response.status_code, response.text))
         except Exception as e:
             logging.error(traceback.format_exc())
             raise e
@@ -109,9 +114,17 @@ class IGSession(BaseClient):
     def search_markets(self, search_term) -> pd.DataFrame:
         endpoint = "markets"
         params = {"searchTerm": search_term}
-        data = self.get(endpoint, params=params)
+        data = self.get(endpoint=endpoint, params=params)
         if data is not None:
             return pd.DataFrame(data["markets"])
+        else:
+            None
+
+    def get_market_details(self, epic_id) -> dict():
+        endpoint = urljoin("markets/", epic_id)
+        data = self.get(endpoint=endpoint)
+        if data is not None:
+            return data
         else:
             None
 
@@ -126,7 +139,8 @@ class IGSession(BaseClient):
         if numpoints: params['max'] = numpoints
         if pagesize: params["pageSize"] = pagesize
         if pagenumber: params["pageNumber"] = pagenumber
-        data = self.get(urljoin(self.base_url, endpoint), params=params)
+
+        data = self.get(endpoint=endpoint, params=params)
         if data is not None:
             return pd.DataFrame(data["prices"])
         else:
@@ -140,16 +154,16 @@ class IGSession(BaseClient):
         endpoint = "prices/" + epic_id + "/" + resolution + "/" + str(numpoints)
         params = {'version': "1"}
 
-        data = self.get(urljoin(self.base_url, endpoint), params=params)
+        data = self.get(endpoint=endpoint, params=params)
         if data is not None:
             return pd.DataFrame(data["prices"])
         else:
             None
 
     def history_by_date(self, epic_id, resolution, start_date, end_date, numpoints, pagesize,
-                         pagenumber) -> pd.DataFrame:
+                        pagenumber) -> pd.DataFrame:
         # https://labs.ig.com/rest-trading-api-reference/service-detail?id=538
-        if start_date is None: start_date = datetime.datetime.today()-BDay(1)
+        if start_date is None: start_date = datetime.datetime.today() - BDay(1)
         if end_date is None: end_date = datetime.datetime.today()
         if resolution is None: resolution = "MINUTE"
 
@@ -158,7 +172,7 @@ class IGSession(BaseClient):
                   "startdate": conv_datetime(start_date, 1),
                   "enddate": conv_datetime(end_date, 1)}
 
-        data = self.get(urljoin(self.base_url, endpoint), params=params)
+        data = self.get(endpoint=endpoint, params=params)
         if data is not None:
             return pd.DataFrame(data["prices"])
         else:
