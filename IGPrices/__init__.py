@@ -1,5 +1,7 @@
-from .rest_client import IGSession
+from .rest_client import IG_session
+from .streaming_client import IG_streaming_session
 
 __all__ = [
-    "IGSession"
+    "IG_session"
+    "IG_streaming_session"
 ]

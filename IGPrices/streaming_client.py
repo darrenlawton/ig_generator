@@ -2,7 +2,7 @@ import logging
 import traceback
 import sys
 
-from IGPrices.lighstreamer import LSClient
+from IGPrices.lightstreamer import LSClient
 from IGPrices.rest_client import IG_session
 
 logger = logging.getLogger(__name__)
@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class IG_streaming_session(IG_session, LSClient):
     def __init__(self, api_key: str, ulogin_details: dict):
-        IGSession.__init__(self, api_key, ulogin_details)
+        IG_session.__init__(self, api_key, ulogin_details)
         if self.login():
             self.connect_lsclient()
 
@@ -27,7 +27,7 @@ class IG_streaming_session(IG_session, LSClient):
             logger.error(traceback.format_exc())
             raise e
 
-    def disconnect(self):
+    def disconnect_session(self):
         # disconnect from LS server
         self.disconnect()
         # log out of IG session

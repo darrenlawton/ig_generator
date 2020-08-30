@@ -57,7 +57,7 @@ class IG_session(BaseClient):
                                headers={**self.headers, 'Version': '2'}, timeout=config.API_TIMEOUT)
             if response.status_code == 200:
                 self.authorisation_headers = update_headers(self.authorisation_headers, response.headers)
-                self.lightstreamerEndpoint = response['lightstreamerEndpoint']
+                self.lightstreamerEndpoint = response.json()['lightstreamerEndpoint']
                 return True
             else:
                 logging.error("Login Error: {0} {1}".format(response.status_code, response.text))
